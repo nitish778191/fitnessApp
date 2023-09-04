@@ -1,0 +1,67 @@
+package com.example.fitnessapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+public class foodactivity extends AppCompatActivity {
+
+
+
+    ListView listview;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_foodactivity);
+
+        String[] tstory = getResources().getStringArray(R.array.title_stroy);
+//
+        final String[] dstory = getResources().getStringArray(R.array.details_story);
+//
+//
+        listview = findViewById(R.id.list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.row, R.id.rowText, tstory);
+//
+        listview.setAdapter(adapter);
+//
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int postion, long id) {
+                String t = dstory[postion];
+                Intent intent = new Intent(foodactivity.this, foodactivitydetails.class);
+                intent.putExtra("story", t);
+                startActivity(intent);
+
+            }
+        });
+
+
+    }
+//
+    public void foodgoback(View view) {
+
+        Intent intent=new Intent(foodactivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+//
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(foodactivity.this,MainActivity.class);
+
+        startActivity(intent);
+        finish();
+        }
+
+
+
+    }
