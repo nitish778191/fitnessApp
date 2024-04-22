@@ -1,151 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horizontal Report Details Display</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .collapsible, .nested-collapsible {
-            background-color: DodgerBlue;
-            color: white;
-            cursor: pointer;
-            padding: 12px;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 14px;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 5px;
-        }
-
-        .active, .collapsible:hover, .nested-collapsible:hover {
-            background-color: #1E90FF;
-        }
-
-        .content, .nested-content {
-            padding: 0 18px;
-            display: none;
-            overflow: hidden;
-            background-color: #f1f1f1;
-            transition: max-height 0.2s ease-out;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        table, .nested-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        th, td, .nested-table th, .nested-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th, .nested-table th {
-            background-color: #f3f3f3;
-        }
-
-        input[type="text"] {
-            padding: 8px;
-            width: 100%;
-            margin-bottom: 12px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-8 text-center">Enhanced ID-Based Report Details</h1>
-        <input type="text" id="searchInput" placeholder="Search by Name..." onkeyup="filterReports()">
-        <div id="jsonContainer"></div>
-    </div>
-
-    <script>
-        const jsonData = [
-            // Your JSON data array here
-        ];
-
-        const detailedKeys = ['schedule', 'last_execution', 'report_metadata', 'report_params', 'notifications', 'shared_with'];
-        const container = document.getElementById('jsonContainer');
-
-        jsonData.forEach((report, index) => {
-            const reportButton = document.createElement('button');
-            reportButton.textContent = report.name ? `${report.name} (ID: ${report.id})` : 'Unnamed Report';
-            reportButton.className = 'collapsible';
-            reportButton.dataset.name = report.name.toLowerCase(); // For searching by name
-
-            const reportContent = document.createElement('div');
-            reportContent.className = 'content';
-
-            const reportTable = document.createElement('table');
-            reportContent.appendChild(reportTable);
-
-            Object.entries(report).forEach(([key, value]) => {
-                const row = reportTable.insertRow();
-                const keyCell = row.insertCell();
-                keyCell.textContent = key;
-
-                const valueCell = row.insertCell();
-                if (detailedKeys.includes(key) && typeof value === 'object') {
-                    const detailButton = document.createElement('button');
-                    detailButton.textContent = `Toggle ${key}`;
-                    detailButton.className = 'nested-collapsible';
-
-                    const detailContent = document.createElement('div');
-                    detailContent.className = 'nested-content';
-
-                    const nestedTable = document.createElement('table');
-                    nestedTable.className = 'nested-table';
-                    Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-                        const nestedRow = nestedTable.insertRow();
-                        const nestedKeyCell = nestedRow.insertCell();
-                        nestedKeyCell.textContent = nestedKey;
-                        const nestedValueCell = nestedRow.insertCell();
-                        nestedValueCell.textContent = JSON.stringify(nestedValue, null, 2);
-                    });
-
-                    detailButton.onclick = function() {
-                        this.classList.toggle("active");
-                        detailContent.style.display = detailContent.style.display === 'block' ? 'none' : 'block';
-                    };
-
-                    detailContent.appendChild(nestedTable);
-                    valueCell.appendChild(detailButton);
-                    valueCell.appendChild(detailContent);
-                } else {
-                    valueCell.textContent = JSON.stringify(value, null, 2);
-                }
-            });
-
-            container.appendChild(reportButton);
-            container.appendChild(reportContent);
-
-            reportButton.addEventListener('click', function() {
-                this.classList.toggle("active");
-                reportContent.style.display = reportContent.style.display === 'block' ? 'none' : 'block';
-            });
-        });
-
-        function filterReports() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const buttons = container.getElementsByTagName('button');
-            for (let i = 0; i < buttons.length; i++) {
-                let name = buttons[i].dataset.name;
-                if (name.indexOf(filter) > -1) {
-                    buttons[i].style.display = "";
-                    buttons[i].nextElementSibling.style.display = buttons[i].classList.contains('active') ? "block" : "none";
-                } else {
-                    buttons[i].style.display = "none";
-                    buttons[i].nextElementSibling.style.display = "none";
+[
+    {'id': '573568b84', 'customer_id': '9dab03', 'user_uuid': '6ff6783ad009d', 'user_id': 'sowab.mcom', 'name': 'WBMS-Sensor port', 'description': 'This report is for Org-WBMS', 'status': 'ACTIVE', 'type': 'hosts', 'schedule': {'definition': '0 12 * * 4', 'display': 'Weekly on Thursday at 12 PM (noon) UTC', 'can_stagger': false
+        }, 'created_on': '2024-01-23T17: 16: 46.47667Z', 'last_updated_on': '2024-02-29T12: 00: 44.021209Z', 'last_execution': {'id': '060b38f386457', 'last_updated_on': '2024-02-29T12: 00: 44.021212409Z', 'execution_metadata': null, 'status': 'DONE', 'status_display': 'Success', 'status_msg': ''
+        }, 'next_execution_on': '2024-032: 00: 00Z', 'start_on': '2024-01-24T00: 00: 00Z', 'report_metadata': {'subtype': '', 'last_unscheduled_execution': {'id': '', 'activity_status': '', 'status_display': '', 'last_updated_ts': null
+            }, 'created_by_uuid': '', 'created_by_user_id': ''
+        }, 'report_params': {'filter': "tags:'SengTags/Org-WBMS'", 'filter_display': "tags:'SensorGroupingTags/Org-WBMS'", 'filter_ui': "tags:'SensopingTags/Org-WBMS'", 'format': 'csv', 'sort': '', 'dashboard_id': '', 'dashboard_visibility': ''
+        }, 'notifications': [
+            {'type': 'email', 'config': {'recients': ['srab.eg.com', 'sarah.met.com'
+                    ], 'plugin_id': '', 'cig_id': '', 'cid': '', 'severity': ''
+                }, 'options': {'attach_report': 'true'
                 }
             }
-        }
-    </script>
-</body>
-</html>
+        ], 'shared_with': ['74d9565d-30e2-46e6-9480'6ff6787c-6f9a-4bf2-a229-6a553a0d009d'
+        ]
+    },
+ {'id': '573568b84', 'customer_id': '9dab03', 'user_uuid': '6ff6783ad009d', 'user_id': 'sowab.mcom', 'name': 'WBMS-Sensor port', 'description': 'This report is for Org-WBMS', 'status': 'ACTIVE', 'type': 'hosts', 'schedule': {'definition': '0 12 * * 4', 'display': 'Weekly on Thursday at 12 PM (noon) UTC', 'can_stagger': false
+        }, 'created_on': '2024-01-23T17: 16: 46.47667Z', 'last_updated_on': '2024-02-29T12: 00: 44.021209Z', 'last_execution': {'id': '060b38f386457', 'last_updated_on': '2024-02-29T12: 00: 44.021212409Z', 'execution_metadata': null, 'status': 'DONE', 'status_display': 'Success', 'status_msg': ''
+        }, 'next_execution_on': '2024-032: 00: 00Z', 'start_on': '2024-01-24T00: 00: 00Z', 'report_metadata': {'subtype': '', 'last_unscheduled_execution': {'id': '', 'activity_status': '', 'status_display': '', 'last_updated_ts': null
+            }, 'created_by_uuid': '', 'created_by_user_id': ''
+        }, 'report_params': {'filter': "tags:'SengTags/Org-WBMS'", 'filter_display': "tags:'SensorGroupingTags/Org-WBMS'", 'filter_ui': "tags:'SensopingTags/Org-WBMS'", 'format': 'csv', 'sort': '', 'dashboard_id': '', 'dashboard_visibility': ''
+        }, 'notifications': [
+            {'type': 'email', 'config': {'recients': ['srab.eg.com', 'sarah.met.com'
+                    ], 'plugin_id': '', 'cig_id': '', 'cid': '', 'severity': ''
+                }, 'options': {'attach_report': 'true'
+                }
+            }
+        ], 'shared_with': ['74d9565d-30e2-46e6-9480'6ff6787c-6f9a-4bf2-a229-6a553a0d009d'
+        ]
+    },
+ {'id': '573568b84', 'customer_id': '9dab03', 'user_uuid': '6ff6783ad009d', 'user_id': 'sowab.mcom', 'name': 'WBMS-Sensor port', 'description': 'This report is for Org-WBMS', 'status': 'ACTIVE', 'type': 'hosts', 'schedule': {'definition': '0 12 * * 4', 'display': 'Weekly on Thursday at 12 PM (noon) UTC', 'can_stagger': false
+        }, 'created_on': '2024-01-23T17: 16: 46.47667Z', 'last_updated_on': '2024-02-29T12: 00: 44.021209Z', 'last_execution': {'id': '060b38f386457', 'last_updated_on': '2024-02-29T12: 00: 44.021212409Z', 'execution_metadata': null, 'status': 'DONE', 'status_display': 'Success', 'status_msg': ''
+        }, 'next_execution_on': '2024-032: 00: 00Z', 'start_on': '2024-01-24T00: 00: 00Z', 'report_metadata': {'subtype': '', 'last_unscheduled_execution': {'id': '', 'activity_status': '', 'status_display': '', 'last_updated_ts': null
+            }, 'created_by_uuid': '', 'created_by_user_id': ''
+        }, 'report_params': {'filter': "tags:'SengTags/Org-WBMS'", 'filter_display': "tags:'SensorGroupingTags/Org-WBMS'", 'filter_ui': "tags:'SensopingTags/Org-WBMS'", 'format': 'csv', 'sort': '', 'dashboard_id': '', 'dashboard_visibility': ''
+        }, 'notifications': [
+            {'type': 'email', 'config': {'recients': ['srab.eg.com', 'sarah.met.com'
+                    ], 'plugin_id': '', 'cig_id': '', 'cid': '', 'severity': ''
+                }, 'options': {'attach_report': 'true'
+                }
+            }
+        ], 'shared_with': ['74d9565d-30e2-46e6-9480'6ff6787c-6f9a-4bf2-a229-6a553a0d009d'
+        ]
+    }
+   ]
