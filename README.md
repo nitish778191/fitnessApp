@@ -556,4 +556,19 @@ const Index = () => {
 
 export default Index;
 
+global.css
+
+---
+const styles = `
+  /* Add your global styles here */
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Add more global styles as needed */
+`;
+
+export const stylesHtml = `<style>${styles}</style>`;
 
