@@ -327,5 +327,42 @@ function toggleDarkMode() {
 
     </script>
 </body>
-</html>
+</html
+
+
+
+
+
+
+_-_-&--_+-&--+_-+&+_
+
+
+
+---
+title: "My Astro App"
+---
+
+<template>
+    <div class="container mx-auto">
+        <h2 id="searchCount"></h2>
+        <h1 class="text-3xl font-bold mb-8 text-center">CrowdStrike Saved Search Detections</h1>
+        <input type="text" id="searchInput" placeholder="Search by Name..." onkeyup="filterReports()">
+        <div id="jsonContainer"></div>
+    </div>
+</template>
+
+<script>
+    // Fetch JSON data
+    fetch('/data/crowdstrike.json')
+        .then(response => response.json())
+        .then(jsonData => {
+            // Your rendering logic here
+        })
+        .catch(error => console.error('Error fetching JSON:', error));
+</script>
+
+<style>
+    /* Your CSS styles here */
+</style>
+
 
