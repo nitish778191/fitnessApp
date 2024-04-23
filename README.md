@@ -61,3 +61,41 @@ with open('corrected_example.json', 'w') as outfile:
     json.dump(corrected_data, outfile, indent=4)
 
 print("Data has been corrected and saved to corrected_example.json")
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="light-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Report Details Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Your existing styles */
+        /* Add additional styles for dark mode */
+        .dark-mode .collapsible, 
+        .dark-mode .nested-collapsible {
+            background-color: MidnightBlue;
+            color: white;
+        }
+
+        .dark-mode .content, 
+        .dark-mode .nested-content {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing HTML content -->
+
+    <!-- JavaScript code for toggling dark mode -->
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
