@@ -1,35 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSON Console</title>
-  </head>
-  <body>
-    <p>HI</p>
-    <script>
-      // Function to fetch JSON data and console.log it
-      function fetchAndLogJSON(url) {
-        fetch(url)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("JSON Data:", data);
-          })
-          .catch((error) => {
-            console.error(
-              "There was a problem with the fetch operation:",
-              error
-            );
-          });
-      }
+import json
 
-      // Call the function with the URL of your JSON file
-      fetchAndLogJSON("package.json");
-    </script>
-  </body>
-</html>
+def correct_json_format(json_file_path):
+    try:
+        # Read JSON file
+        with open(json_file_path, 'r') as file:
+            data = file.read()
+        
+        # Remove spaces in timestamps
+        data = data.replace(': ', ':')
+        
+        # Add missing commas between elements in the JSON array
+        data = data.replace('} {', '}, {')
+        
+        # Enclose keys and values in double quotes
+        data = data.replace("'", '"')
+        
+        # Write corrected data back to file
+        with open(json_file_path, 'w') as file:
+            file.write(data)
+        
+        print("JSON formatting corrected successfully.")
+    except FileNotFoundError:
+        print("File not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage:
+json_file_path = 'package.json'  # Change this to your JSON file path
+correct_json_format(json_file_path)
