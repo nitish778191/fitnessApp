@@ -339,31 +339,54 @@ _-_-&--_+-&--+_-+&+_
 
 
 ---
-title: "My Astro App"
----
+import { useToggle } from '@react-aria/toggle';
 
-<template>
-    <div class="container mx-auto">
-        <h2 id="searchCount"></h2>
-        <h1 class="text-3xl font-bold mb-8 text-center">CrowdStrike Saved Search Detections</h1>
-        <input type="text" id="searchInput" placeholder="Search by Name..." onkeyup="filterReports()">
-        <div id="jsonContainer"></div>
+export let reportData: any;
+
+const ReportDetails = () => {
+  const [isExpanded, setIsExpanded] = useToggle(false);
+
+  return (
+    <div class="collapsible" aria-expanded={isExpanded}>
+      <button onClick={setIsExpanded}>
+        {reportData.name ? `${reportData.name} (ID: ${reportData.id})` : 'Unnamed Report'}
+      </button>
+      <div class="content" hidden={!isExpanded}>
+        <table>
+          <tbody>
+            {Object.entries(reportData).map(([key, value]) => (
+              <tr>
+                <td>{key}</td>
+                <td>
+                  {typeof value === 'object' ? (
+                    <button class="nested-collapsible">Toggle {key}</button>
+                    <div class="nested-content" hidden>
+                      <table class="nested-table">
+                        <tbody>
+                          {Object.entries(value).map(([nestedKey, nestedValue]) => (
+                            <tr>
+                              <td>{nestedKey}</td>
+                              <td>{JSON.stringify(nestedValue)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    JSON.stringify(value)
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-</template>
+  );
+};
 
-<script>
-    // Fetch JSON data
-    fetch('/data/crowdstrike.json')
-        .then(response => response.json())
-        .then(jsonData => {
-            // Your rendering logic here
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
-</script>
+export default ReportDetails;
 
-<style>
-    /* Your CSS styles here */
-</style>
 
 
 
