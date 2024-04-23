@@ -366,3 +366,64 @@ title: "My Astro App"
 </style>
 
 
+
+()(()reportdetails.astro()()()
+
+
+---
+component: ReportDetails
+---
+<template>
+    <div class="container mx-auto">
+        <h2 id="searchCount"></h2>
+        <h1 class="text-3xl font-bold mb-8 text-center">CrowdStrike Saved Search Detections</h1>
+        <input type="text" id="searchInput" placeholder="Search by Name..." onkeyup="filterReports()">
+        <div id="jsonContainer"></div>
+    </div>
+</template>
+
+<script>
+    import { onMount } from 'astro';
+
+    export default function ReportDetails() {
+        onMount(() => {
+            // Fetch JSON data
+            fetch('/data/crowdstrike.json')
+                .then(response => response.json())
+                .then(jsonData => {
+                    renderReports(jsonData); // Call function to render reports
+                })
+                .catch(error => console.error('Error fetching JSON:', error));
+        });
+
+        function renderReports(jsonData) {
+            const detailedKeys = ['schedule', 'last_execution', 'report_metadata', 'report_params', 'notifications', 'shared_with'];
+            const container = document.getElementById('jsonContainer');
+            let count = jsonData.length;
+
+            jsonData.forEach((report, index) => {
+                // Rendering logic for each report
+                // Example: Create HTML elements, insert data, etc.
+            });
+
+            updateSearchCount(count);
+        }
+
+        function updateSearchCount(count) {
+            const searchCount = document.getElementById('searchCount');
+            if (searchCount) {
+                searchCount.textContent = `Number of search results: ${count}`;
+            }
+        }
+
+        function filterReports() {
+            // Filter and display reports based on user input
+            // Example: Get search input, filter reports, update display
+        }
+    }
+</script>
+
+<style>
+    /* Your CSS styles here */
+</style>
+
