@@ -487,3 +487,20 @@ layout.astro
 </body>
 </html>
 
+
+
+search    
+
+---
+export let searchResults: number;
+
+const SearchResultBox = () => {
+  return (
+    <div class="search-result-box bg-blue-500 text-white p-4">
+      <p class="font-bold">Number of Search Results: {searchResults}</p>
+    </div>
+  );
+};
+
+export default SearchResultBox;
+
