@@ -503,4 +503,57 @@ const SearchResultBox = () => {
 };
 
 export default SearchResultBox;
+index
+---
+import ReportDetails from './ReportDetails.astro';
+import SearchResultBox from './SearchResultBox.astro';
+
+const jsonData = [
+  // Your JSON data array here
+];
+
+const detailedKeys = ['schedule', 'last_execution', 'report_metadata', 'report_params', 'notifications', 'shared_with'];
+
+const Index = () => {
+  const filterReports = (event: any) => {
+    const filter = event.target.value.trim().toLowerCase();
+    const buttons = document.getElementsByClassName('collapsible');
+    let count = 0;
+
+    for (let i = 0; i < buttons.length; i++) {
+      const reportName = buttons[i].textContent.trim().toLowerCase();
+      const reportContent = buttons[i].nextElementSibling;
+
+      const reportWords = reportName.split(/\s+/);
+      const match = reportWords.some(word => word.includes(filter));
+
+      if (match) {
+        buttons[i].style.display = "block";
+        reportContent.style.display = buttons[i].classList.contains('active') ? "block" : "none";
+        count++;
+      } else {
+        buttons[i].style.display = "none";
+        reportContent.style.display = "none";
+      }
+    }
+
+    document.getElementById('searchResultBox').searchResults = count;
+  }
+
+  return (
+    <div class="container mx-auto">
+      <h1 class="text-3xl font-bold mb-8 text-center">Enhanced ID-Based Report Details</h1>
+      <input type="text" id="searchInput" placeholder="Search by Name..." onkeyup={filterReports} class="p-2 mb-4" />
+      <div id="jsonContainer">
+        {jsonData.map(report => (
+          <ReportDetails report={report} detailedKeys={detailedKeys} />
+        ))}
+      </div>
+      <SearchResultBox id="searchResultBox" />
+    </div>
+  );
+}
+
+export default Index;
+
 
