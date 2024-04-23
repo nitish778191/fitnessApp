@@ -427,3 +427,40 @@ component: ReportDetails
     /* Your CSS styles here */
 </style>
 
+
+
+
+
+
+
+
+())()()))))))(()
+
+layout.astro
+++-+-+-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <!-- Include any global CSS or meta tags here -->
+</head>
+<body>
+    <header>
+        <!-- Include any header content here -->
+    </header>
+
+    <main>
+        <!-- This is where the content of each page will be inserted -->
+        <slot />
+    </main>
+
+    <footer>
+        <!-- Include any footer content here -->
+    </footer>
+
+    <!-- Include any global scripts here -->
+</body>
+</html>
+
