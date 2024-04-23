@@ -28,3 +28,36 @@ def correct_json_format(json_file_path):
 # Example usage:
 json_file_path = 'package.json'  # Change this to your JSON file path
 correct_json_format(json_file_path)
+
+
+
+
+
+
+
+
+import json
+
+# Read JSON data from file
+with open('example.json', 'r') as file:
+    data = json.load(file)
+
+# Correct the format
+corrected_data = []
+for item in data:
+    # Convert 'shared_with' list to correct format
+    shared_with = item.get('shared_with', [])
+    corrected_shared_with = []
+    for val in shared_with:
+        if isinstance(val, str) and val.strip():
+            corrected_shared_with.append(val.strip())
+        elif isinstance(val, int):
+            corrected_shared_with.append(val)
+    item['shared_with'] = corrected_shared_with
+    corrected_data.append(item)
+
+# Write corrected data to a new JSON file
+with open('corrected_example.json', 'w') as outfile:
+    json.dump(corrected_data, outfile, indent=4)
+
+print("Data has been corrected and saved to corrected_example.json")
