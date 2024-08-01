@@ -1,111 +1,142 @@
-<!DOCTYPE html>
+from jinja2 import Template
+
+# Example data (abbreviated for brevity)
+data = {
+    "parent": {
+        "ip": "192.168.1.1",
+        "first_seen": "2024-08-01",
+        "last_seen": "2024-08-02",
+        "seen": 10,
+        "actor": "Unknown",
+        "spoofable": False,
+        "classification": "Malicious",
+        "cve": "CVE-2023-12345",
+        "bot": True,
+        "vpn": False,
+        "vpn_service": "None"
+    },
+    "metadata": {
+        "tor": False,
+        "sensor_count": 5,
+        "sensor_hits": 100,
+        "destination_countries": ["US", "IN"]
+    },
+    "raw_data": {
+        "scan": [
+            {"port": 80, "protocol": "TCP"},
+            {"port": 443, "protocol": "TCP"}
+        ],
+        "web_paths": ["/index.html", "/admin"],
+        "user_agents": [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 HeyTapBrowser/25.10.8.1.1 Chrome/91.0.4472.88"
+        ],
+        "ja3": "769,49200-49299"
+    },
+    "tags": [
+        {"name": "Tag1", "category": "Category1", "intention": "Intention1", "description": "Description1"},
+        {"name": "Tag2", "category": "Category2", "intention": "Intention2", "description": "Description2"}
+    ]
+}
+
+# Jinja2 template for HTML table
+template = Template("""
 <html>
 <head>
     <title>Data Table</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-    </style>
 </head>
 <body>
-    <h2>Data Table</h2>
-
-    <h3>Parent</h3>
-    <table>
+    <h2>Parent Information</h2>
+    <table border="1">
+        {% for key, value in data.parent.items() %}
         <tr>
-            <th>IP</th>
-            <th>First Seen</th>
-            <th>Last Seen</th>
-            <th>Seen</th>
-            <th>Actor</th>
-            <th>Spoofable</th>
-            <th>Classification</th>
-            <th>CVE</th>
-            <th>Bot</th>
-            <th>VPN</th>
-            <th>VPN Service</th>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
         </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Metadata</h2>
+    <table border="1">
+        {% for key, value in data.metadata.items() %}
         <tr>
-            <td>38.242.209.160</td>
-            <td>2024-07-02</td>
-            <td>2024-07-09</td>
-            <td>...</td>
-            <td>unknown</td>
-            <td>false</td>
-            <td>malicious</td>
-            <td>CVE-2018-13379, CVE-2020-2034, CVE-2021-...</td>
-            <td>false</td>
-            <td>true</td>
-            <td>Unknown</td>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Raw Data</h2>
+    <h3>Scan</h3>
+    <table border="1">
+        <tr>
+            <th>Protocol/Port</th>
+        </tr>
+        {% for item in data.raw_data.scan %}
+        <tr>
+            <td>{{ item.protocol }}/{{ item.port }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Web Paths</h3>
+    <table border="1">
+        <tr>
+            <th>Path</th>
+        </tr>
+        {% for path in data.raw_data.web_paths %}
+        <tr>
+            <td>{{ path }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>User Agents</h3>
+    <table border="1">
+        <tr>
+            <th>User Agent</th>
+        </tr>
+        {% for agent in data.raw_data.user_agents %}
+        <tr>
+            <td>{{ agent }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>JA3</h3>
+    <table border="1">
+        <tr>
+            <td>{{ data.raw_data.ja3 }}</td>
         </tr>
     </table>
 
-    <h3>Metadata</h3>
-    <table>
-        <tr>
-            <th>TOR</th>
-            <th>Sensor Count</th>
-            <th>Sensor Hits</th>
-            <th>Destination Countries</th>
-        </tr>
-        <tr>
-            <td>false</td>
-            <td>10</td>
-            <td>15</td>
-            <td>USA, UK, France</td>
-        </tr>
-    </table>
-
-    <h3>Raw Data</h3>
-    <table>
-        <tr>
-            <th>Scan</th>
-            <th>Web Paths</th>
-            <th>User-Agents</th>
-            <th>JA3</th>
-        </tr>
-        <tr>
-            <td>TCP/443, UDP/53</td>
-            <td>/admin, /login</td>
-            <td>Mozilla/5.0, Chrome/91.0</td>
-            <td>abc123, def456</td>
-        </tr>
-    </table>
-
-    <h3>Tags</h3>
-    <table>
+    <h2>Tags</h2>
+    <table border="1">
         <tr>
             <th>Name</th>
             <th>Category</th>
             <th>Intention</th>
             <th>Description</th>
         </tr>
+        {% for tag in data.tags %}
         <tr>
-            <td>Malware</td>
-            <td>Security</td>
-            <td>Attack</td>
-            <td>Malware infection attempts</td>
+            <td>{{ tag.name }}</td>
+            <td>{{ tag.category }}</td>
+            <td>{{ tag.intention }}</td>
+            <td>{{ tag.description }}</td>
         </tr>
-        <tr>
-            <td>Phishing</td>
-            <td>Social Engineering</td>
-            <td>Attack</td>
-            <td>Phishing attempts targeting credentials</td>
-        </tr>
+        {% endfor %}
     </table>
-
 </body>
 </html>
+""")
+
+# Render the template with the data
+rendered_html = template.render(data=data)
+
+# Write the output to an HTML file
+with open("output.html", "w") as f:
+    f.write(rendered_html)
+
+print("HTML file generated: output.html")
