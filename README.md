@@ -73,4 +73,4 @@ IBM Resilient: Best for robust incident response and case management.
 ServiceNow Security Operations: Ideal for integrating security with IT service management.
 Google Chronicle: Suited for advanced analytics and long-term security data retention, especially in cloud environments.
 Microsoft Sentinel: Excellent for organizations within the Microsoft ecosystem needing a scalable SIEM solution.
-Each platform has its strengths and is suited for different organizational needs and existing infrastructures. The choice depends on specific requirements such as existing tool integrations, cloud adoption, and the need for automation and advanced threat detection
+Each platform has its strengths and is suited for different organizational needs and existing infrastructures. The choice depends on specific requirements such as existing tool integrations, cloud adoption, and the need for automation and advanced threat detection.
