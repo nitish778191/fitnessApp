@@ -1,1 +1,33 @@
-Responders prioritize configuration test failures and machine learning groups similar failures for remediation by the appropriate teams. For instance, failures on supply chain servers are assigned to relevant asset owners. Security analysts can create IT change tickets directly from the test result groups for IT action, tracked through ServiceNow® IT Service Management. Remediation target rules ensure timely fixes, with visibility into approaching or overdue target dates. Non-critical failures can be deferred using exception management. Follow-up scans confirm fixes, and Configuration Compliance results integrate with ServiceNow GRC, linking tests to GRC policies and generating risk issues for non-compliance.
+for tag in Tags:
+    body_html_table += """
+    <tr>
+        <td>
+            <details>
+                <summary>Tags-Name: {}</summary>
+            </details>
+        </td>
+        <td>
+            <details>
+                <summary>Tags-Category</summary>
+                <p>{}</p>
+            </details>
+        </td>
+        <td>
+            <details>
+                <summary>Tags-Intention</summary>
+                <p>{}</p>
+            </details>
+        </td>
+        <td>
+            <details>
+                <summary>Tag-Description</summary>
+                <p>{}</p>
+            </details>
+        </td>
+    </tr>
+    """.format(
+        str(tag['name']),
+        str(tag['category']),
+        str(tag['intention']),
+        str(tag['description'])
+    )
