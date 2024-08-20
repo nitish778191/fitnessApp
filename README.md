@@ -1,7 +1,14 @@
+body_html_table = """
+<table>
+    <tr>
+        <th>Tags Info</th>
+    </tr>
+"""
+
 for tag in Tags:
     body_html_table += """
     <tr>
-        <td colspan="4">
+        <td>
             <details>
                 <summary>Tags Info:</summary>
                 <table>
@@ -21,3 +28,5 @@ for tag in Tags:
         str(tag['intention']),
         str(tag['description'])
     )
+
+body_html_table += "</table>"
