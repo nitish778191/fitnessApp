@@ -1,27 +1,17 @@
 for tag in Tags:
     body_html_table += """
     <tr>
-        <td>
+        <td colspan="4">
             <details>
-                <summary>Tags-Name: {}</summary>
-            </details>
-        </td>
-        <td>
-            <details>
-                <summary>Tags-Category</summary>
-                <p>{}</p>
-            </details>
-        </td>
-        <td>
-            <details>
-                <summary>Tags-Intention</summary>
-                <p>{}</p>
-            </details>
-        </td>
-        <td>
-            <details>
-                <summary>Tag-Description</summary>
-                <p>{}</p>
+                <summary>Tags Info:</summary>
+                <table>
+                    <tr>
+                        <td>Tags-Name: <p>{}</p></td>
+                        <td>Tags-Category: <p>{}</p></td>
+                        <td>Tags-Intention: <p>{}</p></td>
+                        <td>Tag-Description: <p>{}</p></td>
+                    </tr>
+                </table>
             </details>
         </td>
     </tr>
