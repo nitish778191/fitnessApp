@@ -1,4 +1,10 @@
-  <script>
+
+   <input
+      placeholder="Search using Hunt ID or Title..."
+      type="search"
+      class="block w-full rounded bg-gray-200 p-4 mb-4"
+      x-model="searchQuery" <!-- Bind input to searchQuery -->
+    /><script>
     function searchComponent() {
       return {
         searchQuery: '', // Search input query
