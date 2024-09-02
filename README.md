@@ -1,31 +1,20 @@
-
-   <input
-      placeholder="Search using Hunt ID or Title..."
-      type="search"
-      class="block w-full rounded bg-gray-200 p-4 mb-4"
-      x-model="searchQuery" <!-- Bind input to searchQuery -->
-    /><script>
-    function searchComponent() {
-      return {
-        searchQuery: '', // Search input query
-        hunts: ${JSON.stringify(huntEntries)}, // Data fetched from server
-        get filteredHunts() {
-          // Filter hunt entries based on search query for ID or Title
-          if (this.searchQuery.trim() === '') {
-            return this.hunts;
-          }
-
-          const query = this.searchQuery.toLowerCase();
-          return this.hunts.filter(hunt =>
-            hunt.id.toLowerCase().includes(query) ||  // Search by ID
-            hunt.data.title.toLowerCase().includes(query)  // Search by Title
-          );
-        },
-        getTechniqueName(id) {
-          // Helper method to get the technique name
-          const technique = techniques.find(t => t.id === id);
-          return technique ? technique.name : id;
+ <main class="max-w-screen-xl mx-10 mt-10 2x1:mx-auto" x-data="{
+      searchQuery: '', 
+      hunts: ${JSON.stringify(huntEntries)}, 
+      techniques: ${JSON.stringify(techniques)},
+      get filteredHunts() {
+        if (this.searchQuery.trim() === '') {
+          return this.hunts;
         }
-      };
-    }
-  </script>
+
+        const query = this.searchQuery.toLowerCase();
+        return this.hunts.filter(hunt =>
+          hunt.id.toLowerCase().includes(query) ||  // Search by ID
+          hunt.data.title.toLowerCase().includes(query)  // Search by Title
+        );
+      },
+      getTechniqueName(id) {
+        const technique = this.techniques.find(t => t.id === id);
+        return technique ? technique.name : id;
+      }
+  }">
