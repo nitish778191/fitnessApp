@@ -1,4 +1,8 @@
 ---
+
+import { huntEntries } from "../../huntcontent";
+import { techniques } from "../../mitre";
+import Layout from "../../layouts/Layout.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { huntEntries } from "../../huntcontent"; // Assuming this contains your tabular data
 ---
