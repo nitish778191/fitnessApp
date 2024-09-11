@@ -4,31 +4,20 @@ import { techniques } from "../../mitre";
 import Layout from "../../layouts/Layout.astro";
 
 const baseURL = import.meta.env.BASE_URL;
-const serializedHunts = JSON.stringify(huntEntries); // Serialize huntEntries to pass to the client
+
+// Serialize huntEntries to pass to the client as JSON
+const serializedHunts = JSON.stringify(huntEntries);
 ---
 
 <Layout title="All Hunts">
-    <main class="max-w-screen-xl mx-10 mt-10 2xl:mx-auto" x-data="{
-        searchQuery: '',
-        hunts: JSON.parse(`{{ serializedHunts }}`),
-        filteredHunts() {
-            if (!this.searchQuery) {
-                return this.hunts; // Return all hunts if no search query
-            }
-            const query = this.searchQuery.toLowerCase();
-            return this.hunts.filter(hunt =>
-                hunt.id.toLowerCase().includes(query) || 
-                hunt.data.title.toLowerCase().includes(query)
-            );
-        }
-    }">
+    <main class="max-w-screen-xl mx-10 mt-10 2xl:mx-auto">
         <h1 class="my-5 text-2xl font-lseg">All Hunts</h1>
         
         <!-- Search Input -->
         <input
+            id="searchInput"
             placeholder="Search using Hunt ID or Title..."
             type="search"
-            x-model="searchQuery"
             class="block w-full rounded bg-gray-200 p-4 mb-4"
         />
 
@@ -45,46 +34,76 @@ const serializedHunts = JSON.stringify(huntEntries); // Serialize huntEntries to
                 <th scope="col" class="hidden lg:table-cell py-2 px-4 text-center">Platform</th>
                 <th scope="col" class="py-2 px-4 text-center">Creation Date</th>
             </thead>
-            <tbody>
-                <template x-for="hunt in filteredHunts()" :key="hunt.id">
+            <tbody id="huntTableBody">
+                {huntEntries.map((hunt) => (
                     <tr class="text-lseg-darkgrey text-sm">
                         <td class="border-t border-b border-lseg-lightgrey text-center whitespace-nowrap">
                             <a class="py-4 px-4 hover:text-lseg-blue hover:underline" 
-                               :href="hunt.id.toLowerCase()">
-                               {{ hunt.id }}
+                               href={hunt.id.toLowerCase()}>
+                               {hunt.id}
                             </a>
                         </td>
-                        <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">{{ hunt.data.hunt_ticket }}</td>
+                        <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                            {hunt.data.hunt_ticket}
+                        </td>
                         <td class="border-t border-b border-lseg-lightgrey text-left">
-                            <a class="block py-4 px-4 hover:text-lseg-blue hover:underline" :href="hunt.id.toLowerCase()">
-                                {{ hunt.data.title }}
+                            <a class="block py-4 px-4 hover:text-lseg-blue hover:underline" 
+                               href={hunt.id.toLowerCase()}>
+                                {hunt.data.title}
                             </a>
                         </td>
                         <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-left">
                             <div class="flex flex-wrap gap-4">
-                                <template x-for="item in hunt.data.attack_coverage" :key="item.technique">
-                                    <div>
-                                        <a :title="techniques.find(t => t.id === item.technique)?.name" 
-                                           class="hover:underline hover:text-lseg-blue" 
-                                           :href="baseURL + '/technique/' + item.technique">
-                                            {{ item.technique }}
+                                {hunt.data.attack_coverage.map(item => (
+                                    [<a title={techniques.find(t => t.id === item.technique)!.name} 
+                                         class="hover:underline hover:text-lseg-blue" 
+                                         href={baseURL + "/technique/" + item.technique}>
+                                         {item.technique}
+                                     </a>]
+                                    .concat(item.subtechniques?.map(st => (
+                                        <a class="hover:underline hover:text-lseg-blue" 
+                                           title={techniques.find(t => t.id === st)!.name} 
+                                           href={baseURL + "/technique/" + st}>
+                                            {st}
                                         </a>
-                                        <template x-for="subtech in item.subtechniques || []" :key="subtech">
-                                            <a class="hover:underline hover:text-lseg-blue" 
-                                               :title="techniques.find(t => t.id === subtech)?.name" 
-                                               :href="baseURL + '/technique/' + subtech">
-                                                {{ subtech }}
-                                            </a>
-                                        </template>
-                                    </div>
-                                </template>
+                                    )))
+                                )}
                             </div>
                         </td>
-                        <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">{{ hunt.data.platform }}</td>
-                        <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-center">{{ hunt.data.creation_date }}</td>
+                        <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                            {hunt.data.platform}
+                        </td>
+                        <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                            {hunt.data.creation_date}
+                        </td>
                     </tr>
-                </template>
+                ))}
             </tbody>
         </table>
     </main>
+
+    <!-- Client-Side JavaScript (Astro component) -->
+    <script type="module" client:load>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("searchInput");
+            const tableBody = document.getElementById("huntTableBody");
+            const hunts = JSON.parse(`{serializedHunts}`);
+
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase();
+                const rows = tableBody.querySelectorAll("tr");
+
+                rows.forEach(row => {
+                    const idCell = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                    const titleCell = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+
+                    if (idCell.includes(query) || titleCell.includes(query)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 </Layout>
