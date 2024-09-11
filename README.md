@@ -4,17 +4,19 @@ import { techniques } from "../../mitre";
 import Layout from "../../layouts/Layout.astro";
 
 const baseURL = import.meta.env.BASE_URL;
+const serializedHunts = JSON.stringify(huntEntries); // Serialize huntEntries to pass to the client
 ---
 
 <Layout title="All Hunts">
-    <main class="max-w-screen-xl mx-10 mt-10 2x1:mx-auto" x-data="{
+    <main class="max-w-screen-xl mx-10 mt-10 2xl:mx-auto" x-data="{
         searchQuery: '',
+        hunts: JSON.parse(`{{ serializedHunts }}`),
         filteredHunts() {
             if (!this.searchQuery) {
-                return huntEntries; // Return all hunts if no search query
+                return this.hunts; // Return all hunts if no search query
             }
             const query = this.searchQuery.toLowerCase();
-            return huntEntries.filter(hunt =>
+            return this.hunts.filter(hunt =>
                 hunt.id.toLowerCase().includes(query) || 
                 hunt.data.title.toLowerCase().includes(query)
             );
@@ -26,8 +28,8 @@ const baseURL = import.meta.env.BASE_URL;
         <input
             placeholder="Search using Hunt ID or Title..."
             type="search"
-            class="block w-full rounded bg-gray-200 p-4 mb-4"
             x-model="searchQuery"
+            class="block w-full rounded bg-gray-200 p-4 mb-4"
         />
 
         <div class="max-w-screen-xl mx-10 mt-10 2xl:mx-auto my-5 text-sm flex flex-row-reverse gap-8 font-sans">
@@ -67,7 +69,7 @@ const baseURL = import.meta.env.BASE_URL;
                                            :href="baseURL + '/technique/' + item.technique">
                                             {{ item.technique }}
                                         </a>
-                                        <template x-for="subtech in item.subtechniques || []">
+                                        <template x-for="subtech in item.subtechniques || []" :key="subtech">
                                             <a class="hover:underline hover:text-lseg-blue" 
                                                :title="techniques.find(t => t.id === subtech)?.name" 
                                                :href="baseURL + '/technique/' + subtech">
