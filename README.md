@@ -107,3 +107,33 @@ const serializedHunts = JSON.stringify(huntEntries);
         });
     </script>
 </Layout>
+
+
+
+ <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const huntTableBody = document.getElementById('huntTableBody');
+
+            // Function to filter hunts
+            function filterHunts() {
+                const query = searchInput.value.toLowerCase();
+                huntTableBody.querySelectorAll('tr').forEach(row => {
+                    const id = row.querySelector('td:nth-child(1) a').textContent.toLowerCase();
+                    const title = row.querySelector('td:nth-child(3) a').textContent.toLowerCase();
+
+                    if (id.includes(query) || title.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            // Event listener for input
+            searchInput.addEventListener('input', filterHunts);
+
+            // Initial filtering if needed (e.g., if a query is pre-set)
+            filterHunts();
+        });
+    </script>
