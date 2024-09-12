@@ -2,7 +2,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('searchInput');
             const huntTableBody = document.getElementById('huntTableBody');
-            const huntEntries = JSON.parse(`<?php echo $huntEntriesJson; ?>`);
+            const huntEntries = JSON.parse(`{JSON.stringify(huntEntriesJson)}`);
 
             searchInput.addEventListener('input', () => {
                 const query = searchInput.value.toLowerCase();
