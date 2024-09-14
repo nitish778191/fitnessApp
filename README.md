@@ -1,41 +1,30 @@
 <script type="module">
   document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
-    const huntTableBody = document.querySelector('#huntTableBody tbody');
+    const huntTableRows = document.querySelectorAll('#huntTableBody tbody tr');
 
-    // Function to filter and display hunt entries
     function filterHunts() {
       const query = searchInput.value.toLowerCase();
-      huntTableBody.innerHTML = ''; // Clear table
 
-      // Access huntEntries directly in the script
-      huntEntries.forEach((entry) => {
-        const { id, data: { title, hypothesis, description } } = entry;
+      huntTableRows.forEach((row, index) => {
+        const id = row.cells[0].textContent.toLowerCase();
+        const title = row.cells[1].textContent.toLowerCase();
+        const hypothesis = row.cells[2].textContent.toLowerCase();
+        const description = row.cells[3].textContent.toLowerCase();
 
-        // Check if query matches any field
         if (
-          id.toLowerCase().includes(query) ||
-          title.toLowerCase().includes(query) ||
-          hypothesis.toLowerCase().includes(query) ||
-          description.toLowerCase().includes(query)
+          id.includes(query) ||
+          title.includes(query) ||
+          hypothesis.includes(query) ||
+          description.includes(query)
         ) {
-          // Create new table row for matching entries
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${id}</td>
-            <td>${title}</td>
-            <td>${hypothesis}</td>
-            <td>${description}</td>
-          `;
-          huntTableBody.appendChild(row);
+          row.style.display = ''; // Show row
+        } else {
+          row.style.display = 'none'; // Hide row
         }
       });
     }
 
-    // Add event listener to search input
     searchInput.addEventListener('input', filterHunts);
-
-    // Initial population of table
-    filterHunts();
   });
 </script>
