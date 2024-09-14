@@ -1,64 +1,67 @@
-<script type="module">
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('searchInput');
-        const huntTableBody = document.getElementById('huntTableBody');
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    const huntTableBody = document.getElementById('huntTableBody');
 
-        // Assuming huntEntries is available in this scope
-        const huntEntries = [
-          {
-            id: 'TH-0013',
-            collection: 'hunts',
-            data: {
-              title: 'sliver C2 Beacon Execution - MacOS',
-              hypothesis: 'Adversaries will attempt the execution of a payload to establish a C2. Sliver is a popular Open Source C2 framework.',
-              description: 'Modern C2 frameworks like Cobalt Strike and Sliver allow threat actors and Red Teamers...',
-              // ...other data
-            }
-          },
-          // ...other hunt entries
-        ];
+    // Function to filter hunts based on user input
+    function filterHunts() {
+        const query = searchInput.value.toLowerCase();
+        // Clear the table body
+        huntTableBody.innerHTML = '';
 
-        // Create rows based on huntEntries when the page loads
+        // Check each hunt entry
         huntEntries.forEach(entry => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${entry.id}</td>
-                <td>${entry.data.title}</td>
-                <td>${entry.data.hypothesis}</td>
-                <td>${entry.data.description}</td>
-            `;
-            row.setAttribute('data-id', entry.id);
-            row.setAttribute('data-title', entry.data.title.toLowerCase());
-            row.setAttribute('data-hypothesis', entry.data.hypothesis.toLowerCase());
-            row.setAttribute('data-description', entry.data.description.toLowerCase());
-            huntTableBody.appendChild(row);
+            const { id, data } = entry;
+            const { title, hypothesis, description } = data;
+
+            // Check if the search query matches any of the fields
+            const matches = [id, title, hypothesis, description].some(field =>
+                field.toLowerCase().includes(query)
+            );
+
+            if (matches) {
+                // Create a new row with the hunt entry data
+                const row = document.createElement('tr');
+                row.className = 'text-lseg-darkgrey text-sm';
+
+                row.innerHTML = `
+                    <td class="border-t border-b border-lseg-lightgrey text-center whitespace-nowrap">
+                        <a class="py-4 px-4 hover:text-lseg-blue hover:underline" href="${id.toLowerCase()}">
+                            ${id}
+                        </a>
+                    </td>
+                    <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                        ${data.hunt_ticket || 'N/A'}
+                    </td>
+                    <td class="border-t border-b border-lseg-lightgrey text-left">
+                        <a class="block py-4 px-4 hover:text-lseg-blue hover:underline" href="${id.toLowerCase()}">
+                            ${title}
+                        </a>
+                    </td>
+                    <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-left">
+                        <div class="flex flex-wrap gap-4">
+                            ${data.attack_coverage.map(item => `
+                                <a title="${item.technique}" class="hover:underline hover:text-lseg-blue" href="${baseURL}/technique/${item.technique}">
+                                    ${item.technique}
+                                </a>
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                        ${data.platform || 'N/A'}
+                    </td>
+                    <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-center">
+                        ${data.creation_date || 'N/A'}
+                    </td>
+                `;
+
+                huntTableBody.appendChild(row);
+            }
         });
+    }
 
-        function filterHunts() {
-            const query = searchInput.value.toLowerCase();
+    // Event listener to trigger the filter function when user inputs search query
+    searchInput.addEventListener('input', filterHunts);
 
-            huntTableBody.querySelectorAll('tr').forEach(row => {
-                try {
-                    const id = row.getAttribute('data-id').toLowerCase();
-                    const title = row.getAttribute('data-title').toLowerCase();
-                    const hypothesis = row.getAttribute('data-hypothesis').toLowerCase();
-                    const description = row.getAttribute('data-description').toLowerCase();
-
-                    // Check if any of the attributes contain the query
-                    if (id.includes(query) || title.includes(query) || hypothesis.includes(query) || description.includes(query)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                } catch (error) {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        searchInput.addEventListener('input', filterHunts);
-
-        // Initial call to display rows based on the initial state of the input
-        filterHunts();
-    });
-</script>
+    // Initial call to populate the table with all entries
+    filterHunts();
+});
