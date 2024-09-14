@@ -16,3 +16,8 @@
     };
   }
 </script>
+
+        <script id="huntEntriesData" type="application/json">
+          {JSON.stringify(huntEntries)}
+        </script>
+
