@@ -33,3 +33,8 @@
         filterHunts();
     });
 </script>
+
+
+
+  window.huntEntries = JSON.parse(`<?= JSON.stringify(huntEntries) ?>`);
+
