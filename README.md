@@ -1,40 +1,41 @@
 <script type="module">
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('searchInput');
-        const huntTableBody = document.getElementById('huntTableBody');
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    const huntTableBody = document.querySelector('#huntTableBody tbody');
 
-        function filterHunts() {
-            const query = searchInput.value.toLowerCase();
+    // Function to filter and display hunt entries
+    function filterHunts() {
+      const query = searchInput.value.toLowerCase();
+      huntTableBody.innerHTML = ''; // Clear table
 
-            huntTableBody.querySelectorAll('tr').forEach(row => {
-                try {
-                    const idCell = row.querySelector('td:nth-child(1) a');
-                    const titleCell = row.querySelector('td:nth-child(3) a');
+      // Access huntEntries directly in the script
+      huntEntries.forEach((entry) => {
+        const { id, data: { title, hypothesis, description } } = entry;
 
-                    if (idCell && titleCell) {
-                        const id = idCell.textContent.toLowerCase();
-                        const title = titleCell.textContent.toLowerCase();
-
-                        if (id.includes(query) || title.includes(query)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    } else {
-                        row.style.display = 'none';
-                    }
-                } catch (error) {
-                    row.style.display = 'none';
-                }
-            });
+        // Check if query matches any field
+        if (
+          id.toLowerCase().includes(query) ||
+          title.toLowerCase().includes(query) ||
+          hypothesis.toLowerCase().includes(query) ||
+          description.toLowerCase().includes(query)
+        ) {
+          // Create new table row for matching entries
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${id}</td>
+            <td>${title}</td>
+            <td>${hypothesis}</td>
+            <td>${description}</td>
+          `;
+          huntTableBody.appendChild(row);
         }
+      });
+    }
 
-        searchInput.addEventListener('input', filterHunts);
-        filterHunts();
-    });
+    // Add event listener to search input
+    searchInput.addEventListener('input', filterHunts);
+
+    // Initial population of table
+    filterHunts();
+  });
 </script>
-
-
-
-  window.huntEntries = JSON.parse(`<?= JSON.stringify(huntEntries) ?>`);
-
