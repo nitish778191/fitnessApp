@@ -156,3 +156,77 @@ function searchHuntEntries(entries, searchQuery, field) {
 window.searchHuntEntries = searchHuntEntries;
 window.huntEntries = huntEntries;
 
+
+//./../
+// Define interfaces
+interface AttackCoverage {
+  technique: string;
+  subtechniques?: string[];
+}
+
+interface HuntEntryData {
+  title: string;
+  author: string;
+  creation_date: string;
+  platform: string;
+  permissions_required: any[];
+  attack_coverage: AttackCoverage[];
+  hypothesis: string;
+  description: string;
+  hunter_notes: string;
+  analytics: any[];
+  tags: any[];
+  results_csv: any[];
+  detections_created: any[];
+  hunt_output: string;
+  hunt_completeness: any[];
+}
+
+interface HuntEntry {
+  id: string;
+  collection: string;
+  data: HuntEntryData;
+}
+
+// Sample huntEntries data
+const huntEntries: HuntEntry[] = [
+  {
+    id: 'TH-0013',
+    collection: 'hunts',
+    data: {
+      title: 'sliver C2 Beacon Execution - MacOS',
+      author: 'Paul Newton',
+      creation_date: '2024/02/14',
+      platform: 'EDR-Macos',
+      permissions_required: [],
+      attack_coverage: [{ technique: 'T1059' }, { technique: 'T1071' }],
+      hypothesis: 'Adversaries will attempt the execution of a payload to establish a C2. Sliver is a popular Open Source C2 framework.',
+      description: 'Modern C2 frameworks like Cobalt Strike and Sliver allow threat actors and Red Teamers...',
+      hunter_notes: '1. Review the application with the generic APP ID...',
+      analytics: [],
+      tags: [],
+      results_csv: [],
+      detections_created: [],
+      hunt_output: 'Detection Creation and Improvement for Mac OS.',
+      hunt_completeness: []
+    }
+  }
+  // More hunt entries can be added here...
+];
+
+function searchHuntEntries(
+  entries: HuntEntry[],
+  searchQuery: string,
+  field: 'id' | 'title' | 'hypothesis' | 'description'
+): string[] {
+  const query = searchQuery.toLowerCase();
+  return entries
+    .filter(entry => entry.data[field].toLowerCase().includes(query))
+    .map(entry => entry.id);
+}
+
+// Expose to global scope
+(window as any).searchHuntEntries = searchHuntEntries;
+(window as any).huntEntries = huntEntries;
+
+
