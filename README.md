@@ -138,3 +138,21 @@
       searchInput.addEventListener('input', filterHunts);
     });
   </script>
+
+
+
+
+  ..//
+  import { huntEntries } from './huntEntries.js';
+
+function searchHuntEntries(entries, searchQuery, field) {
+  const query = searchQuery.toLowerCase();
+  return entries
+    .filter(entry => entry.data[field].toLowerCase().includes(query))
+    .map(entry => entry.id);
+}
+
+// Expose to global scope
+window.searchHuntEntries = searchHuntEntries;
+window.huntEntries = huntEntries;
+
