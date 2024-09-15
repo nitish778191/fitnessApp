@@ -86,9 +86,55 @@
             </div>
           </td>
           <td class="hidden lg:table-cell border-t border-b border-lseg-lightgrey py-4 px-4 text-center" x-text="hunt.data.platform"></td>
-          <td class="border-t border-b border-lseg-lightgrey py-4 px-4 text-center" x-text="hunt.data.creation_date"></td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
-</div>
+
+
+
+
+
+          [[][][][][]
+          [][][][][
+          [][][][][][
+          [][][][][][
+          [][][][][][]
+        
+<script src="searchHuntEntries.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const tableBody = document.getElementById('huntTableBody');
+      
+      // Function to filter hunt entries and update the table
+      function filterHunts() {
+        const searchQuery = searchInput.value.toLowerCase();
+        const ids = (window as any).searchHuntEntries(
+            (window as any).huntEntries,
+            searchQuery,
+            'description' // Example field to search
+        );
+
+        // Clear the table body
+        tableBody.innerHTML = '';
+
+        // Filter and display rows
+        (window as any).huntEntries.forEach(entry => {
+          if (ids.includes(entry.id)) {
+            const row = document.createElement('tr');
+            row.className = 'text-lseg-darkgrey text-sm';
+
+            row.innerHTML = `
+              <td class="border-t border-b border-lseg-lightgrey text-center whitespace-nowrap">
+                <a class="py-4 px-4 hover:text-lseg-blue hover:underline" href="${entry.id.toLowerCase()}">
+                  ${entry.id}
+                </a>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          }
+        });
+      }
+
+      // Attach input event listener to the search input
+      searchInput.addEventListener('input', filterHunts);
+    });
+  </script>
