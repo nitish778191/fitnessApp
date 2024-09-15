@@ -230,3 +230,24 @@ function searchHuntEntries(
 (window as any).huntEntries = huntEntries;
 
 
+
+
+function searchHuntEntries(
+    entries: HuntEntry[],
+    searchQuery: string,
+    field: 'id' | 'title' | 'hypothesis' | 'description'
+): string[] {
+    const query = searchQuery.toLowerCase();
+
+    return entries
+        .filter(entry => {
+            const value = entry.data[field];
+            if (typeof value === 'string') {
+                return value.toLowerCase().includes(query);
+            }
+            return false; // Handle the case where value is not a string
+        })
+        .map(entry => entry.id);
+}
+
+
