@@ -1,3 +1,8 @@
+ <script
+      src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"
+      defer
+    ></script>
+ 
  <script>
       function getHuntEntries() {
         return {
