@@ -65,3 +65,47 @@
         // More entries can be added here
       ];
     </script>
+
+
+
+
+    <div
+      class="container mx-auto"
+      x-data="getHuntEntries()"
+    >
+      <!-- Search Input -->
+      <input
+        x-ref="searchInput"
+        x-model="search"
+        x-on:keydown.window.prevent.slash="$refs.searchInput.focus()"
+        placeholder="Search for a hunt entry..."
+        type="search"
+        class="block w-full rounded bg-gray-200 p-4 mb-4"
+      />
+
+      <!-- Hunt Entries Grid -->
+      <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Loop through filtered hunt entries -->
+        <template
+          x-for="entry in filteredHuntEntries"
+          :key="entry.id"
+        >
+          <div class="flex items-start shadow p-4 bg-white rounded-lg">
+            <div class="ml-4">
+              <p class="text-lg font-bold text-gray-900" x-text="entry.data.title"></p>
+              <p class="text-sm text-gray-600 mb-2" x-text="entry.data.hypothesis"></p>
+              <p class="text-sm text-gray-600">
+                ATT&CK Techniques:
+                <span
+                  class="text-sm text-blue-600"
+                  x-text="entry.data.attack_coverage.map(a => a.technique).join(', ')"
+                ></span>
+              </p>
+              <p class="text-sm font-bold text-gray-600 mt-2" x-text="entry.data.platform"></p>
+              <p class="text-sm text-gray-500" x-text="entry.data.creation_date"></p>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
