@@ -1,3 +1,10 @@
+  <input
+            id="searchInput"
+            placeholder="Search using Hunt ID or Title..."
+            type="search"
+            class="block w-full rounded bg-gray-200 p-4 mb-4"
+        />
+
 <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
         const searchInput = document.getElementById('searchInput');
