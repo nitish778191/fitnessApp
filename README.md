@@ -114,3 +114,41 @@
 <script type="application/json" id="huntEntriesData">
   {{ huntEntries | jsonify }}
 </script>
+
+<div x-data="{
+    search: '',
+    allHuntEntries: [
+        { id: 'TH-001', title: 'Hunt One', description: 'First hunt description' },
+        { id: 'TH-002', title: 'Hunt Two', description: 'Second hunt description' },
+        // Add more entries as needed
+    ],
+    get filteredHuntEntries() {
+        if (this.search === '') {
+            return this.allHuntEntries;
+        }
+        return this.allHuntEntries.filter(hunt => {
+            return (
+                hunt.id.toLowerCase().includes(this.search.toLowerCase()) ||
+                hunt.title.toLowerCase().includes(this.search.toLowerCase()) ||
+                hunt.description.toLowerCase().includes(this.search.toLowerCase())
+            );
+        });
+    }
+}">
+    <input
+        x-model="search"
+        placeholder="Search by ID, Title, or Description"
+        type="text"
+        class="block w-full rounded bg-gray-200 p-4 mb-4"
+    />
+
+    <div>
+        <template x-for="hunt in filteredHuntEntries" :key="hunt.id">
+            <div class="p-4 border-b">
+                <h2 x-text="hunt.title"></h2>
+                <p x-text="hunt.description"></p>
+                <p><strong>ID:</strong> <span x-text="hunt.id"></span></p>
+            </div>
+        </template>
+    </div>
+</div>
