@@ -40,3 +40,38 @@
 {% endif %}
 
 {{ ns.change_incident_closure_info }}
+
+78485454'''545'
+
+
+{% set ns = namespace(linked_incidents=[],incident_sites=[],linked_incident_number = [],incident_numbers=[]) %}
+
+{% set context_data_json = PlaybookData | jsonpath('$.["Get Incident Static Data"].contextData') | string_to_json_object %}
+
+{% set ParentSite = context_data_json["Site"] %}
+
+
+
+{% set ns.incident_sites = PlaybookData | jsonpath('$.["Get Linked Incident Site"].contextData[*].Site') %}
+
+{% set contextDatas = PlaybookData | jsonpath('$.["Get Linked Incident Site"].contextData')%}
+
+{% if contextDatas is iterable and contextDatas is not string and contextDatas is not mapping %}
+    {% set ns.linked_incident_number = contextDatas %}
+{% else %}
+    {% set ns.linked_incident_number = [contextDatas] %}
+{% endif %}
+
+
+{% for n in ns.linked_incident_number %}
+    {% if n.Site == ParentSite %}
+         {% set ns.incident_numbers = ns.incident_numbers + [n.CaseNumber] %}
+    {% endif %}
+{% endfor %}
+
+
+{% set ns.linked_incidents = context_data_json["Linked Incident"] %}
+
+
+
+{"linked_incidents": {{ ns.incident_numbers }}}
